@@ -1,39 +1,42 @@
 package entities;
 
+import main.Game;
 import utils.LoadSave;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 
-import static utils.Constants.Directions.*;
-import static utils.Constants.Directions.DOWN;
 import static utils.Constants.PlayerConstants.*;
+import static utils.HelpMethods.CanMoveHere;
 
 public class Player extends Entity{
 
     private BufferedImage[][] animations;
     private int aniTick, aniIndex, aniSpeed = 20;
     private int playerAction = IDLE;
-    private boolean moving = false, attacking = false;
+    private boolean moving = false, attacking = false, jumping = false;
     private boolean left, right, up, down;
     private float playerSpeed = 2.5f;
+    private int[][] levelData;
+    private float xDrawOffset = 21 * Game.SCALE;
+    private float yDrawOffset = 4 * Game.SCALE;
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
         loadAnimations();
+        initHitbox(x,y, 20*Game.SCALE, 28*Game.SCALE);
     }
 
     public void update() {
         updatePos();
+//        updateHitbox();
         updateAnimationTick();
         setAnimation();
     }
 
     public void render(Graphics g) {
-        g.drawImage(animations[playerAction][aniIndex],(int)x,(int)y, width, height,null);
+        g.drawImage(animations[playerAction][aniIndex],(int)(hitbox.x - xDrawOffset),(int)(hitbox.y - yDrawOffset), width, height,null);
+        drawHitbox(g);
     }
 
     private void loadAnimations() {
@@ -45,6 +48,10 @@ public class Player extends Entity{
                     animations[i][j] = img.getSubimage(j*64, i*40, 64, 40);
     }
 
+    public void loadLevelData(int[][] levelData) {
+        this.levelData = levelData;
+    }
+
     private void updateAnimationTick() {
         aniTick++;
         if (aniTick >= aniSpeed) {
@@ -53,6 +60,7 @@ public class Player extends Entity{
             if (aniIndex >= GetSpriteAmount(playerAction)) {
                 aniIndex = 0;
                 attacking = false;
+                jumping = false;
             }
         }
     }
@@ -69,6 +77,9 @@ public class Player extends Entity{
         if (attacking)
             playerAction = ATTACK_1;
 
+        if (jumping)
+            playerAction = JUMPING;
+
         if (startAni != playerAction) {
             resetAniTick();
         }
@@ -82,20 +93,31 @@ public class Player extends Entity{
     private void updatePos() {
 
         moving = false;
+        if(!left && !right && !up && !down)
+            return;
 
-        if (left && !right) {
-            x -= playerSpeed;
-            moving = true;
-        } else if (right && !left) {
-            x += playerSpeed;
-            moving = true;
-        }
+        float xSpeed = 0, ySpeed = 0;
+
+        if (left && !right)
+            xSpeed -= playerSpeed;
+         else if (right && !left)
+            xSpeed += playerSpeed;
+
 
         if (up && !down) {
-            y -= playerSpeed;
-            moving = true;
-        } else if (down && !up) {
-            y += playerSpeed;
+            ySpeed -= playerSpeed;
+            jumping = true;
+        } else if (down && !up)
+            ySpeed += playerSpeed;
+
+//        if(CanMoveHere(x+xSpeed, y+ySpeed, width, height, levelData)) {
+//            x += xSpeed;
+//            y += ySpeed;
+//            moving = true;
+//        }
+        if(CanMoveHere(hitbox.x+xSpeed, hitbox.y+ySpeed, hitbox.width, hitbox.height, levelData)) {
+            hitbox.x += xSpeed;
+            hitbox.y += ySpeed;
             moving = true;
         }
     }

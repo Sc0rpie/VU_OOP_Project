@@ -18,12 +18,11 @@ public class GameWindow {
         jframe.addWindowFocusListener(new WindowFocusListener() {
             @Override
             public void windowGainedFocus(WindowEvent e) {
-                gamePanel.getGame().windowFocusLost();
             }
 
             @Override
             public void windowLostFocus(WindowEvent e) {
-
+                gamePanel.getGame().windowFocusLost();
             }
         });
     }
