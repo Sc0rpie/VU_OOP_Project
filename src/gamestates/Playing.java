@@ -71,6 +71,9 @@ public class Playing extends State implements Statemethods{
             case KeyEvent.VK_BACK_SPACE:
                 Gamestate.state = Gamestate.MENU;
                 break;
+            case KeyEvent.VK_P:
+                Gamestate.state = Gamestate.IO;
+                break;
         }
     }
 
@@ -96,4 +99,5 @@ public class Playing extends State implements Statemethods{
     public Player getPlayer() {
         return player;
     }
+
 }

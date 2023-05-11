@@ -2,8 +2,9 @@ package entities;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.io.Serializable;
 
-public abstract class Entity {
+public abstract class Entity implements Serializable {
 
     protected float x,y;
     protected int width, height;

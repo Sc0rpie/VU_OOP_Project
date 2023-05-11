@@ -1,12 +1,14 @@
 package utils;
 
+import entities.Player;
 import main.Game;
+import main.GamePanel;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 public class LoadSave {
 
@@ -15,6 +17,8 @@ public class LoadSave {
     public static final String LEVEL_ONE_DATA = "level_one_data.png";
     public static final String MENU_BUTTONS = "button_atlas.png";
     public static final String MENU_BACKGROUND = "menu_background.png";
+    public static final String SAVE_LOAD_BUTTONS = "saveload_button_atlas.png";
+    public static final String SAVE_LOAD_BACKGROUND = "saveload_background.png";
 
     public static BufferedImage GetSpriteAtlas(String fileName) {
         BufferedImage img = null;
@@ -48,5 +52,38 @@ public class LoadSave {
                 levelData[i][j] = value;
             }
         return levelData;
+    }
+
+    public static void SavePlayerData(Player player) {
+        try {
+            FileOutputStream fos = new FileOutputStream("player.dat");
+            DataOutputStream dos = new DataOutputStream(fos);
+
+            dos.writeInt(player.getX());
+            dos.writeInt(player.getY());
+            dos.close();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    public static void LoadPlayerData(Player player) {
+        try {
+            FileInputStream fis = new FileInputStream("player.dat");
+            DataInputStream dis = new DataInputStream(fis);
+
+            player.setX(dis.readInt());
+            player.setY(dis.readInt());
+            fis.close();
+            dis.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

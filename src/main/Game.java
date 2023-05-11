@@ -1,5 +1,6 @@
 package main;
 import gamestates.Gamestate;
+import gamestates.IO;
 import gamestates.Menu;
 import gamestates.Playing;
 
@@ -14,6 +15,8 @@ public class Game implements Runnable {
 
     private Playing playing;
     private Menu menu;
+
+    private IO io;
 
     public final static int TILES_DEFAULT_SIZE = 32;
     public final static float SCALE = 1.5f;
@@ -35,6 +38,7 @@ public class Game implements Runnable {
     private void initClasses() {
         menu = new Menu(this);
         playing = new Playing(this);
+        io = new IO(this);
     }
 
     private void startGameLoop() {
@@ -49,6 +53,9 @@ public class Game implements Runnable {
                 break;
             case PLAYING:
                 playing.update();
+                break;
+            case IO:
+                io.update();
                 break;
             case OPTIONS:
             case QUIT:
@@ -65,6 +72,9 @@ public class Game implements Runnable {
                 break;
             case PLAYING:
                 playing.draw(g);
+                break;
+            case IO:
+                io.draw(g);
                 break;
             default:
                 break;
@@ -124,5 +134,8 @@ public class Game implements Runnable {
     }
     public Playing getPlaying() {
         return playing;
+    }
+    public IO getIo() {
+        return io;
     }
 }
