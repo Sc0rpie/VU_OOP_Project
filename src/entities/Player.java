@@ -18,8 +18,8 @@ public class Player extends Entity{
     private boolean left, right, up, down, jump;
     private float playerSpeed = 1.0f * Game.SCALE;
     private int[][] levelData;
-    private float xDrawOffset = 21 * Game.SCALE;
-    private float yDrawOffset = 4 * Game.SCALE;
+//    private float xDrawOffset = 21 * Game.SCALE;
+//    private float yDrawOffset = 4 * Game.SCALE;
 
     // Gravity and jumping
     private float airSpeed = 0f;
@@ -31,7 +31,7 @@ public class Player extends Entity{
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
         loadAnimations();
-        initHitbox(x,y, (int)(20*Game.SCALE), (int)(27*Game.SCALE));
+        initHitbox(x,y, (int)(32*Game.SCALE), (int)(32*Game.SCALE));
     }
 
     public void update() {
@@ -40,18 +40,18 @@ public class Player extends Entity{
         setAnimation();
     }
 
-    public void render(Graphics g) {
-        g.drawImage(animations[playerAction][aniIndex],(int)(hitbox.x - xDrawOffset),(int)(hitbox.y - yDrawOffset), width, height,null);
-//        drawHitbox(g);
+    public void render(Graphics g, int levelOffset) {
+        g.drawImage(animations[playerAction][aniIndex],(int)(hitbox.x) - levelOffset,(int)(hitbox.y), width, height,null);
+        drawHitbox(g);
     }
 
     private void loadAnimations() {
-        BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
+        BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.MARIO_ATLAS);
 
-        animations = new BufferedImage[9][6];
+        animations = new BufferedImage[3][3];
         for (int i = 0; i < animations.length; i++)
             for (int j = 0; j < animations[i].length; j++)
-                    animations[i][j] = img.getSubimage(j*64, i*40, 64, 40);
+                    animations[i][j] = img.getSubimage(j*16, i*16, 16, 16);
     }
 
     public void loadLevelData(int[][] levelData) {
@@ -85,11 +85,8 @@ public class Player extends Entity{
             if (airSpeed < 0)
                 playerAction = JUMP;
             else
-                playerAction = FALLING;
+                playerAction = JUMP;
         }
-
-        if (attacking)
-            playerAction = ATTACK_1;
 
         if (startAni != playerAction) {
             resetAniTick();
@@ -107,8 +104,11 @@ public class Player extends Entity{
 
         if (jump)
             jump();
-        if(!left && !right && !inAir)
-            return;
+
+        if (!inAir)
+            if ((!left && !right) || (left && right))
+                return;
+
 
         float xSpeed = 0;
 

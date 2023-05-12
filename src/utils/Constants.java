@@ -34,13 +34,13 @@ public class Constants {
         public static int GetSpriteAmount(int player_action) {
             switch(player_action) {
                 case RUNNING:
-                    return 6;
+                    return 3;
                 case IDLE:
-                    return 5;
+                    return 1;
                 case HIT:
                     return 4;
                 case JUMP:
-                    return 3;
+                    return 1;
                 case ATTACK_1:
                 case ATTACK_JUMP_1:
                 case ATTACK_JUMP_2:

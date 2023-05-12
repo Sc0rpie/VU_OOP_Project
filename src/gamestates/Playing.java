@@ -3,6 +3,7 @@ package gamestates;
 import entities.Player;
 import levels.LevelHandler;
 import main.Game;
+import utils.LoadSave;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -12,6 +13,13 @@ public class Playing extends State implements Statemethods{
     private Player player;
     private LevelHandler levelHandler;
 
+    private int xLevelOffset;
+    private int leftBorder = (int) (0.2 * Game.GAME_WIDTH);
+    private int rightBorder = (int) (0.8 * Game.GAME_WIDTH);
+    private int levelTilesWide = LoadSave.GetLevelData()[0].length;
+    private int maxTilesOffset = levelTilesWide - Game.TILES_IN_WIDTH;
+    private int maxLevelOffsetX = maxTilesOffset * Game.TILES_SIZE;
+
     public Playing(Game game) {
         super(game);
         initClasses();
@@ -19,7 +27,7 @@ public class Playing extends State implements Statemethods{
 
     private void initClasses() {
         levelHandler = new LevelHandler(game);
-        player = new Player(200, 200, (int) (64*Game.SCALE), (int) (40*Game.SCALE));
+        player = new Player(200, 200, (int) (16*Game.SCALE), (int) (16*Game.SCALE));
         player.loadLevelData(levelHandler.getCurrentLevel().getLevelData());
     }
 
@@ -27,12 +35,28 @@ public class Playing extends State implements Statemethods{
     public void update() {
         levelHandler.update();
         player.update();
+        checkCloseToBorder();
+    }
+
+    private void checkCloseToBorder() {
+        int playerX = (int) player.getHitbox().x;
+        int diff = playerX - xLevelOffset;
+
+        if (diff > rightBorder)
+            xLevelOffset += diff - rightBorder;
+        else if (diff < leftBorder)
+            xLevelOffset += diff - leftBorder;
+
+        if(xLevelOffset > maxLevelOffsetX)
+            xLevelOffset = maxLevelOffsetX;
+        else if (xLevelOffset < 0)
+            xLevelOffset = 0;
     }
 
     @Override
     public void draw(Graphics g) {
-        levelHandler.draw(g);
-        player.render(g);
+        levelHandler.draw(g, xLevelOffset);
+        player.render(g, xLevelOffset);
     }
 
     @Override

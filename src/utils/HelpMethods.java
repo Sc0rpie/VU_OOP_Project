@@ -15,7 +15,8 @@ public class HelpMethods {
     }
 
     private static boolean IsSolid(float x, float y, int[][] levelData) {
-        if (x < 0 || x >= Game.GAME_WIDTH)
+        int maxWidth = levelData[0].length * Game.TILES_SIZE;
+        if (x < 0 || x >= maxWidth)
             return true;
         if (y < 0 || y >= Game.GAME_HEIGHT)
             return true;
@@ -23,7 +24,7 @@ public class HelpMethods {
         float xIndex = x / Game.TILES_SIZE;
         float yIndex = y / Game.TILES_SIZE;
         int value = levelData[(int)yIndex][(int)xIndex];
-
+        System.out.println("Is solid value: " + value);
         if (value >= 48 || value < 0 || value != 11)
             return true;
         return false;
@@ -54,7 +55,11 @@ public class HelpMethods {
     public static boolean IsEntityOnFloor(Rectangle2D.Float hitbox, int[][] levelData) {
         if (!IsSolid(hitbox.x, hitbox.y + hitbox.height+1, levelData))
             if (!IsSolid(hitbox.x + hitbox.width, hitbox.y + hitbox.height+1, levelData))
+            {
+                System.out.println("IsEntityOnFloor: false");
                 return false;
+            }
+        System.out.println("IsEntityOnFloor: true");
         return true;
     }
 }
