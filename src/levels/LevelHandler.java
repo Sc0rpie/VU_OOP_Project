@@ -19,17 +19,19 @@ public class LevelHandler {
 
     private void importOutsideSprites() {
         BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.LEVEL_ATLAS);
-        levelSprite = new BufferedImage[48];
-        for (int i = 0; i < 4; i++)
-            for (int j = 0; j < 12; j++) {
-                int index = i*12+j;
-                System.out.println(index);
-                levelSprite[index] = img.getSubimage(j*32, i*32, 32, 32);
+        levelSprite = new BufferedImage[45];
+        for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 9; j++) {
+                int index = i*9+j;
+                System.out.println("Index: " + index);
+                levelSprite[index] = img.getSubimage(j*16, i*16, 16, 16);
             }
 
     }
 
     public void draw (Graphics g, int levelOffset) {
+        g.setColor(new Color(92,148,252));
+        g.fillRect(0,0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
         for (int i = 0; i < Game.TILES_IN_HEIGHT; i++)
             for (int j = 0; j < levelOne.getLevelData()[0].length; j++){
                 int index = levelOne.getSpriteIndex(j,i);

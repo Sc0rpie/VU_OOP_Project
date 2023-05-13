@@ -2,7 +2,9 @@ package utils;
 
 import main.Game;
 
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 
 public class HelpMethods {
     public static boolean CanMoveHere(float x, float y, float width, float height, int[][] levelData) {
@@ -24,15 +26,19 @@ public class HelpMethods {
         float xIndex = x / Game.TILES_SIZE;
         float yIndex = y / Game.TILES_SIZE;
         int value = levelData[(int)yIndex][(int)xIndex];
-        System.out.println("Is solid value: " + value);
-        if (value >= 48 || value < 0 || value != 11)
+//        System.out.println("Is solid value: " + value);
+//        System.out.println("Value: " + value);
+        if (value >= 31 && value <= 39)
+            return false;
+        if (value >= 40 || value < 0 || value != 26)
             return true;
         return false;
     }
 
     public static float GetEntityXPosNextToWall(Rectangle2D.Float hitbox, float xSpeed) {
-        int currentTile = (int)(hitbox.x / Game.TILES_SIZE);
+        int currentTile = Math.round(hitbox.x / Game.TILES_SIZE);
         if (xSpeed > 0) {
+//            System.out.println("xSpeed > 0");
             int tileXPos = currentTile * Game.TILES_SIZE;
             int xOffset = (int)(Game.TILES_SIZE-hitbox.width);
             return tileXPos + xOffset - 1;
@@ -42,14 +48,18 @@ public class HelpMethods {
     }
 
     public static float GetEntityYPosUnderRoofOrAboveFloor(Rectangle2D.Float hitbox, float airSpeed) {
-        int currentTile = (int)(hitbox.y / Game.TILES_SIZE);
+        int currentTile = Math.round(hitbox.y / Game.TILES_SIZE);
         if (airSpeed > 0) { // Falling/touching floor
             int tileYPos = currentTile * Game.TILES_SIZE;
             int yOffset = (int)(Game.TILES_SIZE-hitbox.height);
             return tileYPos + yOffset - 1;
         } else { //jumping
+//            int tileYPos = currentTile * Game.TILES_SIZE;
+//            int yOffset = (int)(Game.TILES_SIZE-hitbox.height);
+//            return tileYPos + yOffset - 1;
             return currentTile * Game.TILES_SIZE;
         }
+
     }
 
     public static boolean IsEntityOnFloor(Rectangle2D.Float hitbox, int[][] levelData) {
@@ -61,5 +71,31 @@ public class HelpMethods {
             }
         System.out.println("IsEntityOnFloor: true");
         return true;
+    }
+
+    public static BufferedImage flipImage(final BufferedImage image, final boolean horizontal,
+                                          final boolean vertical) {
+        int x = 0;
+        int y = 0;
+        int w = image.getWidth();
+        int h = image.getHeight();
+
+        final BufferedImage out = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        final Graphics2D g2d = out.createGraphics();
+
+        if (horizontal) {
+            x = w;
+            w *= -1;
+        }
+
+        if (vertical) {
+            y = h;
+            h *= -1;
+        }
+
+        g2d.drawImage(image, x, y, w, h, null);
+        g2d.dispose();
+
+        return out;
     }
 }

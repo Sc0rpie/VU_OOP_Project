@@ -12,9 +12,9 @@ public class LoadSave {
 
     public static final String PLAYER_ATLAS = "player_sprites.png";
     public static final String MARIO_ATLAS = "mario_atlas.png";
-    public static final String LEVEL_ATLAS = "outside_sprites.png";
+    public static final String LEVEL_ATLAS = "1-1_atlas.png";
 //    public static final String LEVEL_ONE_DATA = "level_one_data.png";
-    public static final String LEVEL_ONE_DATA = "level_one_data_long.png";
+    public static final String LEVEL_ONE_DATA = "1-1_levelData.png";
     public static final String MENU_BUTTONS = "button_atlas.png";
     public static final String MENU_BACKGROUND = "menu_background.png";
 

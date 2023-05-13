@@ -14,8 +14,8 @@ public class Playing extends State implements Statemethods{
     private LevelHandler levelHandler;
 
     private int xLevelOffset;
-    private int leftBorder = (int) (0.2 * Game.GAME_WIDTH);
-    private int rightBorder = (int) (0.8 * Game.GAME_WIDTH);
+    private int leftBorder = (int) (0.3 * Game.GAME_WIDTH);
+    private int rightBorder = (int) (0.6 * Game.GAME_WIDTH);
     private int levelTilesWide = LoadSave.GetLevelData()[0].length;
     private int maxTilesOffset = levelTilesWide - Game.TILES_IN_WIDTH;
     private int maxLevelOffsetX = maxTilesOffset * Game.TILES_SIZE;
@@ -27,7 +27,7 @@ public class Playing extends State implements Statemethods{
 
     private void initClasses() {
         levelHandler = new LevelHandler(game);
-        player = new Player(200, 200, (int) (16*Game.SCALE), (int) (16*Game.SCALE));
+        player = new Player(200, 200, (int)(16*Game.SCALE), (int)(16*Game.SCALE));
         player.loadLevelData(levelHandler.getCurrentLevel().getLevelData());
     }
 
