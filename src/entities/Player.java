@@ -135,11 +135,12 @@ public class Player extends Entity{
 
         if (inAir) {
             if (CanMoveHere(hitbox.x, hitbox.y+airSpeed, hitbox.width, hitbox.height, levelData)) {
-                System.out.println("CanMoveHere | xSpeed: " + xSpeed);
+                System.out.println("CanMoveHere | xSpeed: " + xSpeed + " airSpeed: " + airSpeed);
                 hitbox.y += airSpeed;
                 airSpeed += gravity;
                 updateXPos(xSpeed);
             } else {
+                System.out.println("Can't move here | xSpeed: " + xSpeed + " airSpeed: " + airSpeed);
                 hitbox.y = GetEntityYPosUnderRoofOrAboveFloor(hitbox, airSpeed);
                 if(airSpeed > 0)
                     resetInAir();

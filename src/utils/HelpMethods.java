@@ -20,18 +20,24 @@ public class HelpMethods {
         int maxWidth = levelData[0].length * Game.TILES_SIZE;
         if (x < 0 || x >= maxWidth)
             return true;
-        if (y < 0 || y >= Game.GAME_HEIGHT)
+        if (y >= Game.GAME_HEIGHT)
             return true;
 
         float xIndex = x / Game.TILES_SIZE;
         float yIndex = y / Game.TILES_SIZE;
+        if (yIndex < 0)
+            return false;
         int value = levelData[(int)yIndex][(int)xIndex];
 //        System.out.println("Is solid value: " + value);
 //        System.out.println("Value: " + value);
-        if (value >= 31 && value <= 39)
+        if ((value >= 31 && value <= 39) || (value >= 20 && value <= 25))
             return false;
         if (value >= 40 || value < 0 || value != 26)
+        {
+            System.out.println("Is solid: true");
             return true;
+        }
+
         return false;
     }
 
