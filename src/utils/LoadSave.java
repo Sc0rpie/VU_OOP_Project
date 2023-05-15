@@ -1,10 +1,15 @@
 package utils;
 
+import entities.Goomba;
+import main.Game;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import static utils.Constants.EnemyConstants.GOOMBA;
 
 public class LoadSave {
 
@@ -34,6 +39,19 @@ public class LoadSave {
             }
         }
         return img;
+    }
+
+    public static ArrayList<Goomba> GetGoombas() {
+        BufferedImage img = GetSpriteAtlas(LEVEL_ONE_DATA);
+        ArrayList<Goomba> list = new ArrayList<>();
+        for (int i = 0; i < img.getHeight(); i++)
+            for (int j = 0; j < img.getWidth(); j++) {
+                Color color = new Color(img.getRGB(j, i));
+                int value = color.getGreen();
+                if (value == 0)
+                    list.add(new Goomba(j* Game.TILES_SIZE, i*Game.TILES_SIZE));
+            }
+        return list;
     }
 
     public static int[][] GetLevelData() {

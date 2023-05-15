@@ -4,6 +4,33 @@ import main.Game;
 
 public class Constants {
 
+    public static class EnemyConstants{
+        public final static int GOOMBA = 0;
+
+        public final static int RUNNING = 0;
+        public final static int DEAD = 1;
+
+        public static final int GOOMBA_WIDTH_DEFAULT = 16;
+        public static final int GOOMBA_HEIGHT_DEFAULT = 16;
+        public static final int GOOMBA_WIDTH = (int) (GOOMBA_WIDTH_DEFAULT * Game.SCALE);
+        public static final int GOOMBA_HEIGHT = (int) (GOOMBA_HEIGHT_DEFAULT * Game.SCALE);
+
+        public static int getSpriteAmount(int enemyType, int enemyState) {
+            switch (enemyType) {
+                case GOOMBA:
+                    switch (enemyState) {
+                        case RUNNING:
+                            return 2;
+                        case DEAD:
+                            return 1;
+                        default:
+                            return 0;
+                    }
+            }
+            return 0;
+        }
+    }
+
     public static class UI{
         public static class Buttons{
             public static final int B_WIDTH_DEFAULT = 140;

@@ -47,7 +47,7 @@ public class Player extends Entity{
             anim = flipImage(anim, true, false);
         }
         g.drawImage(anim,(int)(hitbox.x) - levelOffset,(int)(hitbox.y), width, height,null);
-        drawHitbox(g);
+        drawHitbox(g, levelOffset);
     }
 
     private void loadAnimations() {

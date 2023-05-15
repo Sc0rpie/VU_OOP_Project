@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
+import static utils.Constants.Directions.LEFT;
+
 public class HelpMethods {
     public static boolean CanMoveHere(float x, float y, float width, float height, int[][] levelData) {
         if(!IsSolid(x,y,levelData))
@@ -103,5 +105,12 @@ public class HelpMethods {
         g2d.dispose();
 
         return out;
+    }
+    public static boolean IsFloor(Rectangle2D.Float hitbox, float xSpeed, int[][] levelData) {
+        return IsSolid(hitbox.x + xSpeed, hitbox.y + hitbox.height + 1, levelData);
+    }
+    public static boolean IsMapEdge(Rectangle2D.Float hitbox, float xSpeed, int[][] levelData, int dir) {
+        System.out.println("IsMapEdge: " + (hitbox.x == 0 || hitbox.x + hitbox.width == levelData[0].length*Game.TILES_SIZE));
+        return (hitbox.x == 0 && dir == LEFT) || hitbox.x + hitbox.width == levelData[0].length*Game.TILES_SIZE;
     }
 }
