@@ -36,7 +36,7 @@ public class HelpMethods {
             return false;
         if (value >= 40 || value < 0 || value != 26)
         {
-            System.out.println("Is solid: true");
+//            System.out.println("Is solid: true");
             return true;
         }
 
@@ -74,10 +74,10 @@ public class HelpMethods {
         if (!IsSolid(hitbox.x, hitbox.y + hitbox.height+1, levelData))
             if (!IsSolid(hitbox.x + hitbox.width, hitbox.y + hitbox.height+1, levelData))
             {
-                System.out.println("IsEntityOnFloor: false");
+//                System.out.println("IsEntityOnFloor: false");
                 return false;
             }
-        System.out.println("IsEntityOnFloor: true");
+//        System.out.println("IsEntityOnFloor: true");
         return true;
     }
 
@@ -110,7 +110,10 @@ public class HelpMethods {
         return IsSolid(hitbox.x + xSpeed, hitbox.y + hitbox.height + 1, levelData);
     }
     public static boolean IsMapEdge(Rectangle2D.Float hitbox, float xSpeed, int[][] levelData, int dir) {
-        System.out.println("IsMapEdge: " + (hitbox.x == 0 || hitbox.x + hitbox.width == levelData[0].length*Game.TILES_SIZE));
+//        System.out.println("IsMapEdge: " + (hitbox.x == 0 || hitbox.x + hitbox.width == levelData[0].length*Game.TILES_SIZE));
         return (hitbox.x == 0 && dir == LEFT) || hitbox.x + hitbox.width == levelData[0].length*Game.TILES_SIZE;
+    }
+    public static boolean DidCollideWithEnemy(Rectangle2D.Float hitbox, Rectangle2D.Float enemyHitbox) {
+        return hitbox.intersects(enemyHitbox);
     }
 }

@@ -36,10 +36,15 @@ public class Playing extends State implements Statemethods{
 
     @Override
     public void update() {
-        levelHandler.update();
-        player.update();
-        enemyHandler.update(levelHandler.getCurrentLevel().getLevelData());
-        checkCloseToBorder();
+        if (!player.isDead()) {
+            levelHandler.update();
+            player.update();
+            enemyHandler.update(levelHandler.getCurrentLevel().getLevelData());
+            checkCloseToBorder();
+        } else {
+//            System.out.println("Player is dead");
+            player.update();
+        }
     }
 
     private void checkCloseToBorder() {

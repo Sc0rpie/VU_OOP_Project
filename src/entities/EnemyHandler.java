@@ -26,7 +26,7 @@ public class EnemyHandler {
 
     public void update(int[][] levelData) {
         for (Goomba goomba : goombas)
-            goomba.update(levelData);
+            goomba.update(levelData, playing);
     }
 
     public void draw(Graphics g, int xLevelOffset) {

@@ -5,11 +5,16 @@ import utils.LoadSave;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static utils.Constants.PlayerConstants.*;
 import static utils.HelpMethods.*;
 
 public class Player extends Entity{
+
+    ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
     private BufferedImage[][] animations;
     private int aniTick, aniIndex, aniSpeed = 20;
@@ -18,12 +23,12 @@ public class Player extends Entity{
     private boolean left, right, up, down, jump, lastLeft;
     private float playerSpeed = 0.7f * Game.SCALE;
     private int[][] levelData;
-//    private float xDrawOffset = 21 * Game.SCALE;
-//    private float yDrawOffset = 4 * Game.SCALE;
+    private boolean dead = false;
 
     // Gravity and jumping
     private float airSpeed = 0f;
-    private float gravity = 0.05f * Game.SCALE;
+    private float deathSpeed = -2.5f * Game.SCALE;
+    private float gravity = 0.045f * Game.SCALE;
     private float jumpSpeed = -2.5f * Game.SCALE;
     private float fallSpeedAfterCollision = 0.5f * Game.SCALE;
     private boolean inAir = false;
@@ -35,9 +40,27 @@ public class Player extends Entity{
     }
 
     public void update() {
-        updatePos();
-        updateAnimationTick();
-        setAnimation();
+        if (!dead) {
+            updatePos();
+            updateAnimationTick();
+            setAnimation();
+        } else {
+            setAnimation();
+            updateDeathPos();
+        }
+
+    }
+
+    private void updateDeathPos() {
+        executor.scheduleWithFixedDelay(() -> {
+
+            hitbox.y += deathSpeed;
+            deathSpeed += gravity;
+            if (deathSpeed > 2.5f*Game.SCALE)
+                deathSpeed = 2.5f*Game.SCALE - 1.0f*Game.SCALE;
+            System.out.println("Death speed: " + deathSpeed);
+        }, 500, 500, TimeUnit.MILLISECONDS);
+
     }
 
     public void render(Graphics g, int levelOffset) {
@@ -53,7 +76,7 @@ public class Player extends Entity{
     private void loadAnimations() {
         BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.MARIO_ATLAS);
 
-        animations = new BufferedImage[3][3];
+        animations = new BufferedImage[5][3];
         for (int i = 0; i < animations.length; i++)
             for (int j = 0; j < animations[i].length; j++)
                     animations[i][j] = img.getSubimage(j*16, i*16, 16, 16);
@@ -80,18 +103,21 @@ public class Player extends Entity{
     private void setAnimation() {
         int startAni = playerAction;
 
-        if (moving) {
-            playerAction = RUNNING;
-        } else {
-            playerAction = IDLE;
-        }
+        if (!dead) {
+            if (moving) {
+                playerAction = RUNNING;
+            } else {
+                playerAction = IDLE;
+            }
 
-        if (inAir) {
-            if (airSpeed < 0)
-                playerAction = JUMP;
-            else
-                playerAction = JUMP;
-        }
+            if (inAir) {
+                if (airSpeed < 0)
+                    playerAction = JUMP;
+                else
+                    playerAction = JUMP;
+            }
+        } else
+            playerAction = DEAD;
 
         if (startAni != playerAction) {
             resetAniTick();
@@ -135,12 +161,12 @@ public class Player extends Entity{
 
         if (inAir) {
             if (CanMoveHere(hitbox.x, hitbox.y+airSpeed, hitbox.width, hitbox.height, levelData)) {
-                System.out.println("CanMoveHere | xSpeed: " + xSpeed + " airSpeed: " + airSpeed);
+//                System.out.println("CanMoveHere | xSpeed: " + xSpeed + " airSpeed: " + airSpeed);
                 hitbox.y += airSpeed;
                 airSpeed += gravity;
                 updateXPos(xSpeed);
             } else {
-                System.out.println("Can't move here | xSpeed: " + xSpeed + " airSpeed: " + airSpeed);
+//                System.out.println("Can't move here | xSpeed: " + xSpeed + " airSpeed: " + airSpeed);
                 hitbox.y = GetEntityYPosUnderRoofOrAboveFloor(hitbox, airSpeed);
                 if(airSpeed > 0)
                     resetInAir();
@@ -167,9 +193,9 @@ public class Player extends Entity{
     }
 
     private void updateXPos(float xSpeed) {
-        System.out.println("Player data: " + hitbox.x + " " + hitbox.y + " " + hitbox.width + " " + hitbox.height);
+//        System.out.println("Player data: " + hitbox.x + " " + hitbox.y + " " + hitbox.width + " " + hitbox.height);
         if(CanMoveHere(hitbox.x+xSpeed, hitbox.y, hitbox.width, hitbox.height, levelData)) {
-            System.out.println("In updateXPos");
+//            System.out.println("In updateXPos");
             hitbox.x += xSpeed;
         } else {
             hitbox.x = GetEntityXPosNextToWall(hitbox, xSpeed);
@@ -221,5 +247,13 @@ public class Player extends Entity{
 
     public void setJump(boolean jump) {
         this.jump = jump;
+    }
+
+    public boolean isDead() {
+        return dead;
+    }
+
+    public void setDead(boolean dead) {
+        this.dead = dead;
     }
 }
