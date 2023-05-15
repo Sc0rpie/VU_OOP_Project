@@ -1,7 +1,5 @@
 package utils;
 
-import main.Game;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -13,6 +11,7 @@ public class LoadSave {
     public static final String PLAYER_ATLAS = "player_sprites.png";
     public static final String MARIO_ATLAS = "mario_atlas.png";
     public static final String LEVEL_ATLAS = "1-1_atlas.png";
+    public static final String GOOMBA_SPRITE = "goomba_sprite.png";
 //    public static final String LEVEL_ONE_DATA = "level_one_data.png";
     public static final String LEVEL_ONE_DATA = "1-1_levelData.png";
     public static final String MENU_BUTTONS = "button_atlas.png";
