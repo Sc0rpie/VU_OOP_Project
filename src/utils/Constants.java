@@ -4,6 +4,8 @@ import main.Game;
 
 public class Constants {
 
+    public static final float GRAVITY = 0.045f * Game.SCALE;
+
     public static class EnemyConstants{
         public final static int GOOMBA = 0;
 
@@ -52,27 +54,16 @@ public class Constants {
         public static final int RUNNING = 1;
         public static final int JUMP = 2;
         public static final int DEAD = 3;
-        public static final int HIT = 5;
-        public static final int ATTACK_1 = 6;
-        public static final int ATTACK_JUMP_1 = 7;
-        public static final int ATTACK_JUMP_2 = 8;
+        public static final int FINISH = 4;
 
         public static int GetSpriteAmount(int player_action) {
             switch(player_action) {
                 case RUNNING:
                     return 3;
                 case IDLE:
-                    return 1;
-                case HIT:
-                    return 4;
                 case JUMP:
-                    return 1;
-                case ATTACK_1:
-                case ATTACK_JUMP_1:
-                case ATTACK_JUMP_2:
-                    return 3;
                 case DEAD:
-                    return 1;
+                case FINISH:
                 default:
                     return 1;
             }
@@ -80,6 +71,7 @@ public class Constants {
     }
 
     public static class CollisionConstants {
+        public static final int COLLISION_NONE = 0;
         public static final int COLLISION_TOP = 1;
         public static final int COLLISION_BOTTOM = 2;
         public static final int COLLISION_LEFT = 3;

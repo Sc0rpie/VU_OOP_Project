@@ -1,20 +1,58 @@
 package levels;
 
+import entities.Player;
+import gamestates.Gamestate;
 import main.Game;
 import utils.LoadSave;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+import static utils.HelpMethods.GetHittingPos;
+import static utils.HelpMethods.IsEntityHittingBlock;
 
 public class LevelHandler {
     private Game game;
+    private Player player;
     private BufferedImage[] levelSprite;
-    private Level levelOne;
+    private ArrayList<Level> levels;
+    private int levelIndex = 0;
+    private int aniTick, aniSpeed = 35, aniIndex = 13;
+    private Point2D point;
+
 
     public LevelHandler (Game game) {
         this.game = game;
         importOutsideSprites();
-        levelOne = new Level(LoadSave.GetLevelData());
+        levels = new ArrayList<>();
+        buildAllLevels();
+    }
+
+    public void loadNextLevel() {
+        levelIndex++;
+        game.getPlaying().setShowLevelCompletedOverlay(false);
+        if (levelIndex >= levels.size()) {
+            levelIndex = 0;
+            System.out.println("No more levels to load!");
+            Gamestate.state = Gamestate.MENU;
+        }
+
+        Level newLevel = levels.get(levelIndex);
+        game.getPlaying().getEnemyHandler().loadEnemies(newLevel);
+        game.getPlaying().getPlayer().loadLevelData(newLevel.getLevelData());
+        game.getPlaying().setMaxLevelOffset(newLevel.getLevelOffset());
+    }
+
+    private void buildAllLevels() {
+        BufferedImage[] allLevels = LoadSave.GetAllLevels();
+        for (BufferedImage img : allLevels)
+            levels.add(new Level(img));
+    }
+
+    public void restartLevelTiles() {
+        levels.get(levelIndex).restartLevelTiles();
     }
 
     private void importOutsideSprites() {
@@ -33,18 +71,56 @@ public class LevelHandler {
         g.setColor(new Color(92,148,252));
         g.fillRect(0,0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
         for (int i = 0; i < Game.TILES_IN_HEIGHT; i++)
-            for (int j = 0; j < levelOne.getLevelData()[0].length; j++){
-                int index = levelOne.getSpriteIndex(j,i);
+            for (int j = 0; j < levels.get(levelIndex).getLevelData()[0].length; j++){
+                int index = levels.get(levelIndex).getSpriteIndex(j,i);
+                updateTileAnimation(index, j, i);
                 g.drawImage(levelSprite[index], Game.TILES_SIZE*j - levelOffset, Game.TILES_SIZE*i, Game.TILES_SIZE, Game.TILES_SIZE, null);
             }
 
     }
 
-    public void update () {
+    private void updateTileAnimation(int index, int x, int y) {
+        if (index >= 13 && index <= 15) {
+            if (index == 15)
+                levels.get(levelIndex).setSpriteIndex(x,y, aniIndex);
+            else
+                levels.get(levelIndex).setSpriteIndex(x,y, aniIndex);
+        }
+    }
 
+    private void updateAnimationTick() {
+        aniTick++;
+        if (aniTick >= aniSpeed) {
+            aniTick = 0;
+            aniIndex++;
+            if (aniIndex >= 16) {
+                aniIndex = 13;
+            }
+        }
+    }
+
+    public void update () {
+        updateAnimationTick();
+        checkForCollisions();
+    }
+
+    private void checkForCollisions() {
+        if (IsEntityHittingBlock(game.getPlaying().getPlayer().getHitbox(), levels.get(levelIndex).getLevelData())) {
+            point = GetHittingPos(game.getPlaying().getPlayer().getHitbox(), levels.get(levelIndex).getLevelData());
+            int value = levels.get(levelIndex).getLevelData()[(int)point.getY()][(int)point.getX()];
+            if (value >= 13 && value <= 15) {
+                levels.get(levelIndex).setSpriteIndex((int) Math.floor(point.getX()), (int)Math.floor(point.getY()), 16);
+            }
+            if (value == 1)
+                levels.get(levelIndex).setSpriteIndex((int) Math.floor(point.getX()), (int)Math.floor(point.getY()), 26);
+        }
     }
 
     public Level getCurrentLevel() {
-        return levelOne;
+        return levels.get(levelIndex);
+    }
+
+    public int getAmountOfLevels() {
+        return levels.size();
     }
 }

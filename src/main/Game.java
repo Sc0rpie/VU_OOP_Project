@@ -2,6 +2,7 @@ package main;
 import gamestates.Gamestate;
 import gamestates.Menu;
 import gamestates.Playing;
+import utils.LoadSave;
 
 import java.awt.*;
 
@@ -27,9 +28,9 @@ public class Game implements Runnable {
         initClasses();
         gamePanel = new GamePanel(this);
         gameWindow = new GameWindow(gamePanel);
+        gamePanel.setFocusable(true);
         gamePanel.requestFocus();
         startGameLoop();
-//        System.out.println("Game created!");
     }
 
     private void initClasses() {

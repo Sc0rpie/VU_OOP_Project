@@ -1,41 +1,50 @@
 package entities;
 
 import gamestates.Playing;
-
-import java.awt.*;
-
-import static utils.Constants.Directions.LEFT;
 import static utils.Constants.EnemyConstants.*;
-import static utils.HelpMethods.*;
-import static utils.HelpMethods.IsFloor;
 
-public class Goomba extends Enemy{
+public class Goomba extends Enemy {
 
+    /**
+     * Sukuria naują Goomba objektą.
+     *
+     * @param x pradinė horizontalė pozicija
+     * @param y pradinė vertikalė pozicija
+     */
     public Goomba(float x, float y) {
         super(x, y, GOOMBA_WIDTH, GOOMBA_HEIGHT, GOOMBA);
-        initHitbox(x,y,GOOMBA_WIDTH,GOOMBA_HEIGHT);
-
+        initHitbox(GOOMBA_WIDTH_DEFAULT, GOOMBA_HEIGHT_DEFAULT);
     }
 
+    /**
+     * Atnaujina Goomba objektą.
+     *
+     * @param levelData lygio duomenys
+     * @param playing   esamasis žaidimo objektas
+     */
     public void update(int[][] levelData, Playing playing) {
         updateMove(levelData);
         updateAnimationTick();
         checkCollision(playing);
     }
 
+    /**
+     * Atnaujina Goomba objekto judėjimą.
+     *
+     * @param levelData lygio duomenys
+     */
     private void updateMove(int[][] levelData) {
-        if(firstUpdate)
+        if (firstUpdate)
             firstUpdateCheck(levelData);
 
-        if(inAir)
+        if (inAir)
             updateInAir(levelData);
-         else {
-            switch (enemyState){
+        else {
+            switch (state) {
                 case RUNNING:
                     move(levelData);
                     break;
             }
         }
-
     }
 }
