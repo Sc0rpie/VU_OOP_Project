@@ -9,9 +9,21 @@ import java.awt.event.KeyListener;
 
 import static utils.Constants.Directions.*;
 
+/**
+ * Klaviatūros įvesties klasė
+ */
 public class KeyboardInputs implements KeyListener {
 
+    /**
+     * Žaidimo panelis
+     * @param gamePanel žaidimo panelis
+     */
     private GamePanel gamePanel;
+
+    /**
+     * Klasės konstruktorius
+     * @param gamePanel žaidimo panelis
+     */
     public KeyboardInputs(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
     }
@@ -21,6 +33,10 @@ public class KeyboardInputs implements KeyListener {
 
     }
 
+    /**
+     * Metodas, kuris atlieka veiksmus, kai paspaudžiamas klavišas
+     * @param e klavišo paspaudimas
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         switch(Gamestate.state) {
@@ -33,6 +49,10 @@ public class KeyboardInputs implements KeyListener {
         }
     }
 
+    /**
+     * Metodas, kuris atlieka veiksmus, kai atleidžiamas klavišas
+     * @param e klavišo atleidimas
+     */
     @Override
     public void keyReleased(KeyEvent e) {
         switch(Gamestate.state) {
