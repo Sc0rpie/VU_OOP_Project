@@ -7,11 +7,29 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+/**
+ * Pelės įvesties klasė
+ */
 public class MouseInputs implements MouseListener, MouseMotionListener {
+
+    /**
+     * Žaidimo panelis
+     * @param gamePanel žaidimo panelis
+     */
     private GamePanel gamePanel;
+
+    /**
+     * Klasės konstruktorius
+     * @param gamePanel žaidimo panelis
+     */
     public MouseInputs(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
     }
+
+    /**
+     * Metodas, kuris atlieka veiksmus, kai paspaudžiamas pelės mygtukas
+     * @param e pelės mygtuko paspaudimas
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
        switch(Gamestate.state) {
@@ -24,6 +42,10 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
        }
     }
 
+    /**
+     * Metodas, kuris atlieka veiksmus, kai paspaudžiamas pelės mygtukas
+     * @param e pelės mygtuko paspaudimas
+     */
     @Override
     public void mousePressed(MouseEvent e) {
         switch(Gamestate.state) {
@@ -36,6 +58,10 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
         }
     }
 
+    /**
+     * Metodas, kuris atlieka veiksmus, kai atleidžiamas pelės mygtukas
+     * @param e pelės mygtuko atleidimas
+     */
     @Override
     public void mouseReleased(MouseEvent e) {
         switch(Gamestate.state) {
@@ -63,6 +89,10 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 
     }
 
+    /**
+     * Metodas, kuris atlieka veiksmus, kai pelė judinama
+     * @param e pelės mygtuko judinimo event'as
+     */
     @Override
     public void mouseMoved(MouseEvent e) {
         switch(Gamestate.state) {

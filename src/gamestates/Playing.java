@@ -14,25 +14,69 @@ import java.awt.event.MouseEvent;
 
 import static utils.HelpMethods.IsFinishTile;
 
+/**
+ * Žaidimo būsena, kuri vykdoma žaidimo metu.
+ */
 public class Playing extends State implements Statemethods{
+
+    /**
+     * Žaidėjo objektas.
+     */
     private Player player;
+    /**
+     * Lygio valdymo objektas.
+     */
     private LevelHandler levelHandler;
+    /**
+     * Priešų valdymo objektas.
+     */
     private EnemyHandler enemyHandler;
+    /**
+     * Lygio baigimo objektas.
+     */
     private LevelCompletedOverlay levelCompletedOverlay;
+    /**
+     * Game over objektas.
+     */
     private GameOverOverlay gameOverOverlay;
 
+    /**
+     * Lygio horizontalus offsetas.
+     */
     private int xLevelOffset;
+    /**
+     * Lygio kairiojo krašto offset'as.
+     */
     private int leftBorder = (int) (0.3 * Game.GAME_WIDTH);
+    /**
+     * Lygio dešiniojo krašto offset'as.
+     */
     private int rightBorder = (int) (0.6 * Game.GAME_WIDTH);
+    /**
+     * Lygio maksimalus offset'as.
+     */
     private int maxLevelOffsetX;
+    /**
+     * Ar rodyti lygio baigimo overlay.
+     */
     private boolean showLevelCompletedOverlay = false;
+    /**
+     * Ar rodyti game over overlay.
+     */
     private boolean showGameOverOverlay = false;
 
+    /**
+     * Žaidimo būsenos konstruktorius.
+     * @param game Žaidimo objektas.
+     */
     public Playing(Game game) {
         super(game);
         initClasses();
     }
 
+    /**
+     * Inicializuojami klasės kintamieji, kurie yra naudojami žaidimo metu.
+     */
     private void initClasses() {
         levelHandler = new LevelHandler(game);
         enemyHandler = new EnemyHandler(this);
@@ -45,16 +89,25 @@ public class Playing extends State implements Statemethods{
         gameOverOverlay = new GameOverOverlay(this);
     }
 
+    /**
+     * Metodas, pakraunantis kitą lygį.
+     */
     public void loadNextLevel() {
         resetAll();
         levelHandler.loadNextLevel();
         player.setSpawn(levelHandler.getCurrentLevel().getPlayerSpawn());
     }
 
+    /**
+     * Metodas, pakraunantis pradinį lygį.
+     */
     private void loadStartLevel() {
         enemyHandler.loadEnemies(levelHandler.getCurrentLevel());
     }
 
+    /**
+     * Metodas, kuris apskaičiuoja lygio offset'ą.
+     */
     private void calculateLevelOffset() {
         maxLevelOffsetX = levelHandler.getCurrentLevel().getLevelOffset();
     }
@@ -129,6 +182,10 @@ public class Playing extends State implements Statemethods{
             xLevelOffset = 0;
     }
 
+    /**
+     * Žaidimo piešimo metodas.
+     * @param g Grafinis objektas.
+     */
     @Override
     public void draw(Graphics g) {
         levelHandler.draw(g, xLevelOffset);
@@ -140,6 +197,10 @@ public class Playing extends State implements Statemethods{
             levelCompletedOverlay.draw(g);
     }
 
+    /**
+     * Metodas, kuris nustato maksimalų lygio offset'ą.
+     * @param levelOffset Lygio offset'as.
+     */
     public void setMaxLevelOffset (int levelOffset) {
         this.maxLevelOffsetX = levelOffset;
     }
@@ -149,6 +210,10 @@ public class Playing extends State implements Statemethods{
 
     }
 
+    /**
+     * Patikrina ar pelės mygtukas buvo paspaustas
+     * @param e Pelės eventas
+     */
     @Override
     public void mousePressed(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1)
@@ -165,6 +230,10 @@ public class Playing extends State implements Statemethods{
 
     }
 
+    /**
+     * Patikrina ar klaviaturos mygtukas buvo paspaustas
+     * @param e Klaviaturos eventas
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         switch(e.getKeyCode()) {
@@ -188,6 +257,10 @@ public class Playing extends State implements Statemethods{
         }
     }
 
+    /**
+     * Patikrina ar klaviaturos mygtukas buvo atleistas
+     * @param e Klaviaturos eventas
+     */
     @Override
     public void keyReleased(KeyEvent e) {
         switch(e.getKeyCode()) {
@@ -203,18 +276,27 @@ public class Playing extends State implements Statemethods{
         }
     }
 
-    public void windowFocusLost() {
-        player.resetDirBooleans();
-    }
-
+    /**
+     * Metodas "player" objekto gavimui.
+     * @return player Player objektas.
+     */
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     * Metodas "enemyHandler" objekto gavimui.
+     * @return enemyHandler EnemyHandler objektas.
+     */
     public EnemyHandler getEnemyHandler() {
         return enemyHandler;
     }
 
+    /**
+     * Metodas žaidimo pabaigos overlay'o rodymo nustatymui
+     * @param showLevelCompletedOverlay Ar rodyti overlay'ą
+     * @return showLevelCompletedOverlay Ar rodomas overlay'as
+     */
     public boolean setShowLevelCompletedOverlay(boolean showLevelCompletedOverlay) {
         return this.showLevelCompletedOverlay = showLevelCompletedOverlay;
     }

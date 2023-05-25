@@ -3,6 +3,9 @@ package entities;
 import gamestates.Playing;
 import static utils.Constants.EnemyConstants.*;
 
+/**
+ * Goomba klasė, skirta Goomba objektams.
+ */
 public class Goomba extends Enemy {
 
     /**

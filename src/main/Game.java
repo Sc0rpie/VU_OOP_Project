@@ -6,7 +6,11 @@ import utils.LoadSave;
 
 import java.awt.*;
 
+/**
+ * Pagrindinė žaidimo klasė, kuri valdo visas kitas klases.
+ */
 public class Game implements Runnable {
+
     private GameWindow gameWindow;
     private GamePanel gamePanel;
     private Thread gameThread;
@@ -16,6 +20,9 @@ public class Game implements Runnable {
     private Playing playing;
     private Menu menu;
 
+    /**
+     * Pagrindinės žaidimo konstantos.
+     */
     public final static int TILES_DEFAULT_SIZE = 16;
     public final static float SCALE = 3f;
     public final static int TILES_IN_WIDTH = 16;
@@ -24,6 +31,9 @@ public class Game implements Runnable {
     public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
     public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
 
+    /**
+     * Konstruktorius, kuris inicializuoja žaidimo langą, panelę ir pradeda žaidimo ciklą.
+     */
     public Game() {
         initClasses();
         gamePanel = new GamePanel(this);
@@ -33,15 +43,22 @@ public class Game implements Runnable {
         startGameLoop();
     }
 
+    /**
+     * Inicializuoja visas kitas reikalingas klases.
+     */
     private void initClasses() {
         menu = new Menu(this);
         playing = new Playing(this);
     }
 
+    /**
+     * Pradeda žaidimo ciklą.
+     */
     private void startGameLoop() {
         gameThread = new Thread(this);
         gameThread.start();
     }
+
 
     public void update() {
         switch (Gamestate.state) {
@@ -59,6 +76,11 @@ public class Game implements Runnable {
         }
     }
 
+    /**
+     * Atvaizduoja žaidimą.
+     *
+     * @param g Grafika
+     */
     public void render(Graphics g) {
         switch (Gamestate.state) {
             case MENU:
@@ -72,6 +94,9 @@ public class Game implements Runnable {
         }
     }
 
+    /**
+     * Metodas skirtas žaidimo ciklui.
+     */
     @Override
     public void run() {
         double timePerFrame = 1000000000.0 / FPS_SET;
@@ -114,15 +139,26 @@ public class Game implements Runnable {
         }
     }
 
+    /**
+     * Metodas skirtas tikrinimui, ar žaidimas yra žaidžiamas.
+     */
     public void windowFocusLost() {
         if(Gamestate.state == Gamestate.PLAYING) {
             playing.getPlayer().resetDirBooleans();
         }
     }
 
+    /**
+     * Gauna menių objektą
+     * @return meniu objektas
+     */
     public Menu getMenu() {
         return menu;
     }
+    /**
+     * Gauna Playing objektą
+     * @return Playing objektas
+     */
     public Playing getPlaying() {
         return playing;
     }

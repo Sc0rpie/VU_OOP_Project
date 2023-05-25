@@ -7,6 +7,9 @@ import static utils.Constants.UI.Buttons.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+/**
+ * Klasė, atsakinga už meniu mygtukų rodymą ir veiksmus.
+ */
 public class MenuButton {
     private int xPos, yPos, rowIndex, index;
     private int xOffsetCenter = B_WIDTH / 2;
@@ -15,6 +18,14 @@ public class MenuButton {
     private boolean mouseOver, mousePressed;
     private Rectangle bounds;
 
+    /**
+     * Konstruktorius, kuris sukuria meniu mygtuką.
+     *
+     * @param xPos      mygtuko x koordinatė
+     * @param yPos      mygtuko y koordinatė
+     * @param rowIndex  eilutės indeksas, kuriame yra mygtukas
+     * @param state     mygtuko susietas žaidimo būsenos objektas
+     */
     public MenuButton(int xPos, int yPos, int rowIndex, Gamestate state) {
         this.xPos = xPos;
         this.yPos = yPos;
@@ -35,9 +46,19 @@ public class MenuButton {
             imgs[i] = temp.getSubimage(i * B_WIDTH_DEFAULT, rowIndex * B_HEIGHT_DEFAULT, B_WIDTH_DEFAULT, B_HEIGHT_DEFAULT);
         }
     }
+
+    /**
+     * Piešia meniu mygtuką.
+     *
+     * @param g grafinis objektas
+     */
     public void draw (Graphics g) {
         g.drawImage(imgs[index], xPos - xOffsetCenter, yPos, B_WIDTH, B_HEIGHT, null);
     }
+
+    /**
+     * Atnaujina meniu mygtuką.
+     */
     public void update() {
         index = 0;
         if(mouseOver)
@@ -66,10 +87,16 @@ public class MenuButton {
         return bounds;
     }
 
+    /**
+     * Taiko susietą žaidimo būseną.
+     */
     public void applyGamestate() {
         Gamestate.state = state;
     }
 
+    /**
+     * Atstatomi mygtuko būsenos kintamieji.
+     */
     public void resetBools() {
         mouseOver = false;
         mousePressed = false;

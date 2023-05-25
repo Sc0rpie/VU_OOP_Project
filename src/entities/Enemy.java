@@ -11,7 +11,7 @@ import static utils.Constants.GRAVITY;
 import static utils.HelpMethods.*;
 
 /**
- * Enemy klasė vaizduoja abstraktų priešo objektą žaidime.
+ * Enemy klasė suteikianti bendrą funkcionalumą priešų objektams.
  * Ji paveldi Entity klasę ir suteikia bendrą funkcionalumą priešų objektams.
  */
 public abstract class Enemy extends Entity {

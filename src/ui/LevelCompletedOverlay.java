@@ -9,18 +9,28 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
+/**
+ * Klasė, atsakinga už lygio užbaigimo langą.
+ */
 public class LevelCompletedOverlay {
 
     private Playing playing;
     private BufferedImage img;
     private int bgX, bgY, bgWidth, bgHeight;
 
-
+    /**
+     * Konstruktorius, kuris sukuria lygio užbaigimo langą.
+     *
+     * @param playing žaidimo būsena "Playing"
+     */
     public LevelCompletedOverlay(Playing playing) {
         this.playing = playing;
         initImg();
     }
 
+    /**
+     * Inicializuoja lygio užbaigimo langą.
+     */
     private void initImg() {
         img = LoadSave.GetSpriteAtlas(LoadSave.COMPLETED_IMG);
         bgWidth = (int) (img.getWidth() * Game.SCALE);
@@ -33,6 +43,11 @@ public class LevelCompletedOverlay {
 
     }
 
+    /**
+     * Piešia lygio užbaigimo langą.
+     *
+     * @param g grafinis objektas
+     */
     public void draw(Graphics g) {
         g.drawImage(img, bgX, bgY, bgWidth, bgHeight, null);
     }

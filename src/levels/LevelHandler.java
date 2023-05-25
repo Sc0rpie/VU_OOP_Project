@@ -13,7 +13,11 @@ import java.util.ArrayList;
 import static utils.HelpMethods.GetHittingPos;
 import static utils.HelpMethods.IsEntityHittingBlock;
 
+/**
+ * Klasė, kuri valdo lygius.
+ */
 public class LevelHandler {
+
     private Game game;
     private Player player;
     private BufferedImage[] levelSprite;
@@ -22,7 +26,10 @@ public class LevelHandler {
     private int aniTick, aniSpeed = 35, aniIndex = 13;
     private Point2D point;
 
-
+    /**
+     * Lygių valdiklio konstruktorius.
+     * @param game Žaidimo objektas
+     */
     public LevelHandler (Game game) {
         this.game = game;
         importOutsideSprites();
@@ -30,6 +37,9 @@ public class LevelHandler {
         buildAllLevels();
     }
 
+    /**
+     * Naujo lygio pakrovimas.
+     */
     public void loadNextLevel() {
         levelIndex++;
         game.getPlaying().setShowLevelCompletedOverlay(false);
@@ -45,16 +55,25 @@ public class LevelHandler {
         game.getPlaying().setMaxLevelOffset(newLevel.getLevelOffset());
     }
 
+    /**
+     * Visų lygių pakrovimas.
+     */
     private void buildAllLevels() {
         BufferedImage[] allLevels = LoadSave.GetAllLevels();
         for (BufferedImage img : allLevels)
             levels.add(new Level(img));
     }
 
+    /**
+     * Atstatyti lygio plyteles.
+     */
     public void restartLevelTiles() {
         levels.get(levelIndex).restartLevelTiles();
     }
 
+    /**
+     * Grafinių detalių pakrovimas iš failo.
+     */
     private void importOutsideSprites() {
         BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.LEVEL_ATLAS);
         levelSprite = new BufferedImage[45];
@@ -64,9 +83,14 @@ public class LevelHandler {
                 System.out.println("Index: " + index);
                 levelSprite[index] = img.getSubimage(j*16, i*16, 16, 16);
             }
-
     }
 
+    /**
+     * Nupiešia lygį.
+     *
+     * @param g Grafinis objektas, skirtas piešimui
+     * @param levelOffset Lygio poslinkis
+     */
     public void draw (Graphics g, int levelOffset) {
         g.setColor(new Color(92,148,252));
         g.fillRect(0,0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
@@ -99,11 +123,17 @@ public class LevelHandler {
         }
     }
 
+    /**
+     * Atnaujina animacijos laikmačio reikšmę ir tikrina susidūrimus.
+     */
     public void update () {
         updateAnimationTick();
         checkForCollisions();
     }
 
+    /**
+     * Tikrina susidūrimus.
+     */
     private void checkForCollisions() {
         if (IsEntityHittingBlock(game.getPlaying().getPlayer().getHitbox(), levels.get(levelIndex).getLevelData())) {
             point = GetHittingPos(game.getPlaying().getPlayer().getHitbox(), levels.get(levelIndex).getLevelData());
@@ -116,10 +146,20 @@ public class LevelHandler {
         }
     }
 
+    /**
+     * Gauna esamą lygį.
+     *
+     * @return Esamas lygis
+     */
     public Level getCurrentLevel() {
         return levels.get(levelIndex);
     }
 
+    /**
+     * Gauna lygių skaičių.
+     *
+     * @return Lygių skaičius
+     */
     public int getAmountOfLevels() {
         return levels.size();
     }

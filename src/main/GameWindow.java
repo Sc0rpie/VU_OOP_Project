@@ -4,9 +4,17 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 
+/**
+ * Klasė, kuri atsakinga už žaidimo langą.
+ */
 public class GameWindow {
     private JFrame jframe;
 
+    /**
+     * Konstruktorius, kuris sukuria žaidimo langą.
+     *
+     * @param gamePanel Žaidimo panelė
+     */
     public GameWindow(GamePanel gamePanel) {
         jframe = new JFrame();
         jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

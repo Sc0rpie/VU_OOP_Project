@@ -13,6 +13,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 
+/**
+ * Klasė, atsakinga už paveikslėlių įkėlimą.
+ */
 public class LoadSave {
 
     public static final String MARIO_ATLAS = "mario_atlas.png";
@@ -21,7 +24,14 @@ public class LoadSave {
     public static final String MENU_BUTTONS = "button_atlas.png";
     public static final String MENU_BACKGROUND = "menu_background.png";
     public static final String COMPLETED_IMG = "completed_sprite.png";
+    public static final String GAME_OVER_IMG = "dead_sprite.png";
 
+    /**
+     * Paima sprite atlaso paveikslėlį.
+     *
+     * @param fileName  Paveikslėlio failo pavadinimas
+     * @return sprite atlaso paveikslėlis
+     */
     public static BufferedImage GetSpriteAtlas(String fileName) {
         BufferedImage img = null;
         InputStream is = LoadSave.class.getResourceAsStream("/" + fileName);
@@ -41,6 +51,11 @@ public class LoadSave {
         return img;
     }
 
+    /**
+     * Gauti visus lygius iš resursų aplanko "lvls".
+     *
+     * @return masyvas su visais lygių paveikslėliais
+     */
     public static BufferedImage[] GetAllLevels() {
         URL url = LoadSave.class.getResource("/lvls");
         File file = null;
